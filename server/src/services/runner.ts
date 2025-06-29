@@ -42,6 +42,7 @@ export const runWorkFlow = async (payload: RunWorkflowRequest) => {
       maxTokens,
     });
 
+    console.log(output);
     //save result
     results[taskId] = output;
 

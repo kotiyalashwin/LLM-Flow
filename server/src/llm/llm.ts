@@ -1,4 +1,8 @@
-type LLMRequest = {
+import { callAnthropic } from "./anthropicCaller";
+import { callGemini } from "./geminiCaller";
+import { callOpenAi } from "./openaiCaller";
+
+export type LLMRequest = {
   prompt: string;
   model: "openai" | "claude" | "gemini";
   temperature?: number;
@@ -6,9 +10,15 @@ type LLMRequest = {
 };
 
 //test function
-export async function callLLM(req: LLMRequest): Promise<string> {
-  const { prompt, model } = req;
-
-  console.log(`📡 Calling ${model} with prompt:\n${prompt}\n`);
-  return `Response from ${model} for prompt: "${prompt.slice(0, 60)}..."`;
+export async function callLLM(req: LLMRequest) {
+  switch (req.model) {
+    case "openai":
+      return callOpenAi(req);
+    case "claude":
+      return callAnthropic(req);
+    case "gemini":
+      return callGemini(req);
+    default:
+      throw new Error(`Unsupported Model Provider : ${req.model}`);
+  }
 }

@@ -18,7 +18,11 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.55.0",
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.0.0",
     "express": "^5.1.0",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "openai": "^5.8.2"
   }
 }
