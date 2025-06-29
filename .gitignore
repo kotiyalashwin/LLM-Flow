@@ -1,0 +1,48 @@
+# === Node.js (common for both backend and frontend) ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+.pnpm-debug.log
+
+# === Environment Files ===
+.env
+.env.local
+.env.*.local
+
+# === Logs ===
+logs/
+*.log
+
+# === OS & IDE files ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Build Output ===
+dist/
+build/
+
+# === Next.js ===
+web/.next/
+web/out/
+
+# === Optional: ignore compiled Prisma client if generated ===
+server/prisma/node_modules/
+
+# === Optional: ignore test output ===
+coverage/
+*.lcov
+
+# === Optional: ignore turbo repo cache if you're using it ===
+turbo/
+
+# === Optional: ignore lockfiles from other managers ===
+yarn.lock
+pnpm-lock.yaml
