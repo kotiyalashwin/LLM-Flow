@@ -10,6 +10,7 @@ export default function EllipseGradient() {
     w-full sm:w-[100vw] md:w-[80vw] 
     max-w-[960px] 
     h-auto 
+    opacity-60
     blur-[100px] 
     -z-10 
     pointer-events-none

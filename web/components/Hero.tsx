@@ -14,13 +14,13 @@ export const Hero = () => {
             </div>
           </nav>
 
-          <section className="bg-white/5 overflow-hidden rounded-4xl  backdrop-blur-2xl flex-1 flex flex-col md:flex-row py-10">
+          <section className="bg-white/5  rounded-4xl  backdrop-blur-2xl overflow-hidden flex-1 flex flex-col md:flex-row py-10">
             <div
               className="flex flex-col items-center md:justify-center justify-start z-40 h-[40vh] md:w-[40vw]
              md:h-auto w-full "
             >
               <div>
-                <h1 className="text-5xl pl-8 text-center md:text-left md:text-6xl font-semibold text-white md:leading-tight">
+                <h1 className="text-5xl leading-10  text-center md:text-left md:text-6xl font-bold text-white md:leading-tight">
                   <motion.span
                     initial={{ opacity: 0, filter: "blur(10px)" }}
                     animate={{ opacity: 1, filter: "blur(0px)" }}
@@ -35,10 +35,7 @@ export const Hero = () => {
                     transition={{ duration: 0.5, ease: "easeIn" }}
                     className="block mb-2"
                   >
-                    into{" "}
-                    <span className="bg-gradient-to-r from-55% from-purple-600 to-orange-300 text-transparent bg-clip-text">
-                      Workflows
-                    </span>
+                    into <span className="text-purple-600">Workflows</span>
                   </motion.span>
                   <motion.span
                     initial={{ opacity: 0, filter: "blur(10px)" }}
