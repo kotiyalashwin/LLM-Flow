@@ -1,0 +1,12 @@
+<svg width="1440" height="1703" viewBox="0 0 1440 1703" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_f_8_49)">
+<g clip-path="url(#paint0_angular_8_49_clip_path)" data-figma-skip-parse="true"><g transform="matrix(1.4175 -0.616608 1.10657 0.968402 674 851.5)"><foreignObject x="-695.164" y="-695.164" width="1390.33" height="1390.33"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(78, 48, 159, 1) 0deg,rgba(29, 79, 100, 1) 88.2692deg,rgba(105, 30, 192, 1) 310.028deg,rgba(78, 48, 159, 1) 360deg);height:100%;width:100%;opacity:0.5"></div></foreignObject></g></g><ellipse cx="674" cy="851.5" rx="900" ry="501.5" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.11685712635517120,&#34;g&#34;:0.31201916933059692,&#34;b&#34;:0.39565995335578918,&#34;a&#34;:1.0},&#34;position&#34;:0.24519230425357819},{&#34;color&#34;:{&#34;r&#34;:0.41504335403442383,&#34;g&#34;:0.11911405622959137,&#34;b&#34;:0.75324821472167969,&#34;a&#34;:1.0},&#34;position&#34;:0.86119002103805542}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.11685712635517120,&#34;g&#34;:0.31201916933059692,&#34;b&#34;:0.39565995335578918,&#34;a&#34;:1.0},&#34;position&#34;:0.24519230425357819},{&#34;color&#34;:{&#34;r&#34;:0.41504335403442383,&#34;g&#34;:0.11911405622959137,&#34;b&#34;:0.75324821472167969,&#34;a&#34;:1.0},&#34;position&#34;:0.86119002103805542}],&#34;transform&#34;:{&#34;m00&#34;:2835.0,&#34;m01&#34;:2213.1486816406250,&#34;m02&#34;:-1850.0743408203125,&#34;m10&#34;:-1233.2156982421875,&#34;m11&#34;:1936.8044433593750,&#34;m12&#34;:499.70565795898438},&#34;opacity&#34;:0.50,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
+</g>
+<defs>
+<filter id="filter0_f_8_49" x="-576" y="0" width="2500" height="1703" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="175" result="effect1_foregroundBlur_8_49"/>
+</filter>
+<clipPath id="paint0_angular_8_49_clip_path"><ellipse cx="674" cy="851.5" rx="900" ry="501.5"/></clipPath></defs>
+</svg>
