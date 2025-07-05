@@ -21,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` ${sora.variable} bg-[#0D0814] antialiased`}>
-        <div className="absolute inset-0 h-[200vh] min-h-screen backdrop-blur-md bg-black/[34%] z-0" />
+        <div className="absolute inset-0 h-[200vh] min-h-screen backdrop-blur-sm bg-black/25 z-5" />
+        <div className="absolute inset-0 h-[200vh] min-h-screen bg-pattern z-0  " />
+
         {children}
       </body>
     </html>
