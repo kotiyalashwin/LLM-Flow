@@ -19,12 +19,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="min-h-full">
       <body className={` ${sora.variable} bg-[#0D0814] antialiased`}>
-        <div className="absolute inset-0 h-[200vh] min-h-screen backdrop-blur-sm bg-black/25 z-5" />
-        <div className="absolute inset-0 h-[200vh] min-h-screen bg-pattern z-0  " />
+        <div className="relative min-h-screen w-full">
+          <div className="pointer-events-none absolute inset-0 z-0 w-full h-full">
+            <div className="absolute inset-0 h-full min-h-screen backdrop-blur-sm bg-black/25" />
+            {/* <div className="fixed inset-0 h-full min-h-screen bg-pattern " /> */}
+            {/* Fixed pattern layer that works on mobile too */}
+            <div className="fixed inset-0 z-0 bg-pattern bg-cover bg-center pointer-events-none" />
+          </div>
 
-        {children}
+          <div className="pointer-events-none absolute inset-0 z-5 w-full h-full">
+            <div className="absolute inset-0 h-full min-h-screen backdrop-blur-xs  bg-black/10" />
+          </div>
+
+          <div className="relative z-10">{children}</div>
+        </div>
       </body>
     </html>
   );

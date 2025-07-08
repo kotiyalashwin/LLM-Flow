@@ -1,6 +1,12 @@
 import * as motion from "motion/react-client";
 import { Button } from "./ui/button";
 import { Star } from "lucide-react";
+import Link from "next/link";
+
+const fadeIn = {
+  initial: { opacity: 0, y: +40, filter: "blur(10px)" },
+  fadeIn: { opacity: 1, y: 0, filter: "blur(0px)" },
+};
 
 export const Hero = () => {
   return (
@@ -14,72 +20,105 @@ export const Hero = () => {
           >
             <div className="flex bg-white/10 backdrop-blur-3xl w-full justify-between items-center rounded-2xl py-2 px-6 ">
               {/* <img className="w-8 h-8" src="/logo.svg" alt="logo" /> */}
-              <p className="text-xl text-center md:text-[22px] ">TaskFlow</p>
+              <p className=" text-center md:text-[22px] ">TaskFlow</p>
               <Button
                 variant={"outline"}
-                className="bg-transparent cursor-pointer"
+                className="bg-transparent cursor-pointer text-xs md:text-sm"
               >
                 Get Started
               </Button>
             </div>
           </motion.nav>
 
-          <section className="  rounded-4xl    overflow-hidden flex-1 flex flex-col md:flex-row py-10">
+          <section className="justify-center rounded-4xl    overflow-hidden flex-1 flex flex-col  ">
             <div
-              className="flex flex-col items-center justify-center  z-40 h-[40vh] md:w-[40vw]
+              className="flex flex-col items-center justify-center  z-40 h-[40vh] 
              md:h-auto w-full "
             >
               <div className="w-full">
-                <h1 className="text-5xl leading-10  text-center md:text-left md:text-6xl  text-white md:leading-tight">
+                <h1 className="text-5xl leading-10  text-center  md:text-6xl  text-amber-50 md:leading-tight">
                   <motion.span
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    variants={fadeIn}
+                    initial="initial"
+                    animate="fadeIn"
                     transition={{ duration: 0.5, ease: "easeIn" }}
-                    className="block mb-2"
+                    className="flex space-x-4 justify-center mb-2 "
                   >
-                    Convert Prompts
+                    <span className="hidden md:block whitespace-nowrap">
+                      Convert{" "}
+                    </span>
+                    <span>Prompts</span>
                   </motion.span>
                   <motion.span
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.5, ease: "easeIn" }}
-                    className="block mb-2"
+                    variants={fadeIn}
+                    initial="initial"
+                    animate="fadeIn"
+                    transition={{ duration: 0.5, delay: 0.25, ease: "easeIn" }}
+                    className="block mb-2 text-center"
                   >
-                    into{" "}
-                    <span className="bg-gradient-to-r from-55% from-purple-600 to-orange-300 text-transparent bg-clip-text">
-                      Workflows
+                    into
+                  </motion.span>
+
+                  <motion.span
+                    variants={fadeIn}
+                    initial="initial"
+                    animate="fadeIn"
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }}
+                    className="block text-center mb-4"
+                  >
+                    <span className=" inline-block px-2 py-1 bg-purple-600 text-black talic font-semibold skew-x-[-6deg] rounded">
+                      <span className="skew-x-[6deg] inline-block">
+                        Workflows
+                      </span>
                     </span>
                   </motion.span>
                   <motion.span
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.5, ease: "easeIn" }}
+                    variants={fadeIn}
+                    initial="initial"
+                    animate="fadeIn"
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }}
                     className="block mb-2"
                   >
                     using LLMs{" "}
                   </motion.span>
                 </h1>
 
-                <div className="flex mt-8 md:ml-2 w-full items-center md:justify-start space-x-4 justify-center">
-                  <motion.button className="outline-2 p-2 rounded-2xl ">
+                <motion.div className="flex mt-8 md:ml-2 w-full items-center space-x-4 justify-center">
+                  <motion.button
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }}
+                    className="outline-2 p-2 rounded-2xl "
+                  >
                     Create Workflow
                   </motion.button>
-                  <motion.button className="flex items-center outline-2   rounded-2xl p-2">
-                    Star on Github <Star />
+                  <motion.button
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.5, delay: 0.75, ease: "easeIn" }}
+                    className=" outline-2   rounded-2xl p-2"
+                  >
+                    <Link
+                      className="flex items-centerllhjy8y9t8ttt88t8ttt8t"
+                      target="_blank"
+                      href={"https://github.com/kotiyalashwin/LLM-Flow"}
+                    >
+                      Star on Github <Star className="ml-1" size={18} />
+                    </Link>
                   </motion.button>
-                </div>
+                </motion.div>
               </div>
 
               {/* <motion.button className="border border-neutral-400/50 md:float-start rounded-2xl hover:text-purple-800 text-lg m-4 md:ml-8 py-2 px-6 ">
                 Begin
               </motion.button> */}
             </div>
-            <div className="flex-1 flex flex-col justify-center items-center p-8">
+            <div className=" hidden md:flex flex-col justify-center items-center p-8">
               <motion.img
                 initial={{
                   opacity: 0,
                   rotate: -20,
-                  scale: 2,
+
                   y: +100,
                   x: +50,
                   filter: "blur(10px)",
@@ -87,7 +126,7 @@ export const Hero = () => {
                 animate={{
                   opacity: 1,
                   rotate: 0,
-                  scale: 0.75,
+
                   y: 0,
                   x: 0,
                   filter: "blur(0px)",
