@@ -66,7 +66,7 @@ export function AnimatedAIName({
   return (
     <span
       style={getBlurStyle()}
-      className="bg-gradient-to-r from-55% from-purple-600 to-orange-300 text-transparent bg-clip-text"
+      className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600"
     >
       {getCurrentName()}
     </span>
