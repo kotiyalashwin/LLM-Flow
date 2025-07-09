@@ -1,4 +1,5 @@
 import EllipseGradient from "../components/Landing/Ellipse";
+import Features from "../components/Landing/Features";
 import { Hero } from "../components/Landing/Hero";
 import Navbar from "../components/Landing/Navbar";
 import Orchestration from "../components/Landing/Orchestration";
@@ -12,6 +13,7 @@ export default function Home() {
       <Hero />
       <StaggeredLines />
       <Orchestration />
+      <Features />
     </main>
   );
 }

@@ -5,6 +5,12 @@ import * as motion from "motion/react-client";
 function Orchestration() {
   return (
     <LayoutProvider>
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-purple-400/30 rounded-full animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/3 w-4 h-4 bg-blue-400/40 rounded-full animate-pulse delay-700"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400/20 rounded-full animate-pulse delay-1000"></div>
+        <div className="absolute top-2/3 right-1/4 w-2 h-2 bg-cyan-400/30 rounded-full animate-pulse delay-500"></div>
+      </div>
       <div className="min-h-screen relative overflow--hidden">
         <motion.img
           animate={{
