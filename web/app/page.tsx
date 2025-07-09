@@ -1,13 +1,17 @@
-import EllipseGradient from "../components/Ellipse";
-import { Hero } from "../components/Hero";
-import { StaggeredLines } from "../components/StaggerLines";
+import EllipseGradient from "../components/Landing/Ellipse";
+import { Hero } from "../components/Landing/Hero";
+import Navbar from "../components/Landing/Navbar";
+import Orchestration from "../components/Landing/Orchestration";
+import { StaggeredLines } from "../components/Landing/StaggerLines";
 
 export default function Home() {
   return (
     <main className="relative z-20 text-white overflow-x-hidden">
       <EllipseGradient />
+      <Navbar />
       <Hero />
       <StaggeredLines />
+      <Orchestration />
     </main>
   );
 }

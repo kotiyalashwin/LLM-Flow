@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
+import Navbar from "../components/Landing/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
