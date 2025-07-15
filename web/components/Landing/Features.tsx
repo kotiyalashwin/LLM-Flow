@@ -15,7 +15,6 @@ const Features = () => {
       icon: Brain,
       gradient: "from-purple-500/20 to-pink-500/20",
       size: "large",
-      stats: "12+ Models",
     },
     {
       id: 2,
@@ -24,7 +23,6 @@ const Features = () => {
       icon: Zap,
       gradient: " to-red-400/20",
       size: "medium",
-      //   stats: "~1.8s avg",
     },
     {
       id: 5,
@@ -33,7 +31,7 @@ const Features = () => {
       icon: Globe,
       gradient: "from-indigo-500/20 to-purple-500/20",
       size: "small",
-      stats: "100% Uptime",
+      stats: "Ain1",
     },
     {
       id: 6,
@@ -63,7 +61,6 @@ const Features = () => {
     <LayoutProvider>
       <section className="py-16 md:py-24 px-4 md:px-6 relative">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
               Why Choose{" "}
@@ -77,7 +74,6 @@ const Features = () => {
             </p>
           </div>
 
-          {/* Responsive Bento Grid */}
           <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 md:grid-rows-2 gap-4 md:gap-6 h-auto">
             {features.map((feature) => {
               const Icon = feature.icon;
@@ -102,10 +98,8 @@ const Features = () => {
                   onMouseEnter={() => setHoveredFeature(feature.id)}
                   onMouseLeave={() => setHoveredFeature(null)}
                 >
-                  {/* Glass overlay */}
                   <div className="absolute inset-0 bg-black/20 backdrop-blur-md" />
 
-                  {/* Content */}
                   <div className="relative z-10 p-4 md:p-8 h-full flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-3 md:mb-4">
@@ -132,7 +126,6 @@ const Features = () => {
                       </p>
                     </div>
 
-                    {/* Hover indicator */}
                     <div
                       className={`
                     mt-3 md:mt-4 w-full h-0.5 md:h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full
@@ -146,7 +139,6 @@ const Features = () => {
                     />
                   </div>
 
-                  {/* Animated background particles */}
                   <div className="absolute inset-0 opacity-30">
                     <div
                       className={`
@@ -171,7 +163,6 @@ const Features = () => {
                     />
                   </div>
 
-                  {/* Gradient overlay on hover */}
                   <div
                     className={`
                   absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 rounded-xl md:rounded-2xl

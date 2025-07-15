@@ -1,4 +1,4 @@
-import { AnimatedAIName } from "./AnimatedAIName";
+import { AnimatedAIName } from "./Animated/AnimatedAIName";
 import EllipseGradient from "./Ellipse";
 import { LayoutProvider } from "./LayoutProvider";
 import * as motion from "motion/react-client";

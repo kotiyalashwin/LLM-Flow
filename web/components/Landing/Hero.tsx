@@ -5,6 +5,7 @@ import Link from "next/link";
 import { color } from "motion";
 import Navbar from "./Navbar";
 import { LayoutProvider } from "./LayoutProvider";
+import { AuthButton } from "./AuthButton";
 
 const fadeIn = {
   initial: { opacity: 0, y: +40, filter: "blur(10px)", color: "black" },
@@ -17,8 +18,6 @@ export const Hero = () => {
     //   <div className="w-full md:max-w-[85vw]">
     <LayoutProvider>
       <div className="min-h-screen flex flex-col text-white px-4 md:px-10 py-10 space-y-4">
-        {/* <Navbar /> */}
-
         <section className="justify-center rounded-4xl  md:mt-8  overflow-hidden flex-1 flex flex-col  ">
           <div className="absolute inset-0">
             <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400/30 rounded-full animate-pulse"></div>
@@ -26,7 +25,6 @@ export const Hero = () => {
             <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400/20 rounded-full animate-pulse delay-1000"></div>
             <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-cyan-400/30 rounded-full animate-pulse delay-500"></div>
           </div>
-          {/* <div className="absolute inset-0 bg-gradient-radial from-purple-500/10 via-transparent to-transparent" /> */}
 
           <div
             className="flex flex-col items-center justify-center  z-40 h-[40vh] 
@@ -87,20 +85,19 @@ export const Hero = () => {
                 transition={{ delay: 1, ease: "easeIn" }}
                 className="flex mt-8 md:ml-2 w-full  items-center space-x-4 justify-center"
               >
-                <Button
-                  size="lg"
-                  className="group bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 border-0"
-                >
-                  Create Workflow
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Button>
+                <AuthButton>Create WorkFlow</AuthButton>
                 <Button
                   variant="outline"
                   size="lg"
-                  className="group bg-transparent border-2 border-gray-600 hover:border-purple-400 text-white hover:text-purple-400 font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/10 backdrop-blur-sm"
+                  className="group items-center flex bg-transparent border-2 border-gray-600 hover:border-purple-400 text-white hover:text-purple-400 font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/10 backdrop-blur-sm"
                 >
-                  <Star className="mr-2 w-5 h-5 group-hover:text-yellow-400 transition-colors duration-300" />
-                  Star on Github
+                  <Star className="w-5 h-5 group-hover:text-yellow-400 transition-colors duration-300" />
+                  <a
+                    href="https://github.com/kotiyalashwin/LLM-Flow"
+                    target="_blank_"
+                  >
+                    Star on Github
+                  </a>
                 </Button>
               </motion.div>
             </div>
