@@ -85,7 +85,9 @@ export const Hero = () => {
                 transition={{ delay: 1, ease: "easeIn" }}
                 className="flex mt-8 md:ml-2 w-full  items-center space-x-4 justify-center"
               >
-                <AuthButton>Create WorkFlow</AuthButton>
+                <AuthButton>
+                  <Link href={"/workflow"}>Create WorkFlow</Link>
+                </AuthButton>
                 <Button
                   variant="outline"
                   size="lg"

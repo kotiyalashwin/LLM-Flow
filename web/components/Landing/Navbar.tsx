@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AuthButton } from "./AuthButton";
 
 const Navbar = () => {
@@ -14,7 +15,9 @@ const Navbar = () => {
 
           {/* Get Started Button */}
           <div className="flex items-center">
-            <AuthButton>Get Started</AuthButton>
+            <AuthButton>
+              <Link href={"/workflow"}>Get Started</Link>
+            </AuthButton>
           </div>
         </div>
       </div>
