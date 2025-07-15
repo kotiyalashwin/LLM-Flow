@@ -27,7 +27,7 @@ import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 
 import { Textarea } from "../ui/textarea";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -56,6 +56,8 @@ export default function NodeBoard() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [nodeToDelete, setNodeToDelete] = useState<string | null>(null);
   const [nodeId, setNodeId] = useState(1);
   const [taskForm, setTaskForm] = useState<{
     name: string;
@@ -77,7 +79,9 @@ export default function NodeBoard() {
         x: Math.random() * 400 + 100,
         y: Math.random() * 300 + 100,
       },
+
       data: {
+        onDelete: () => initiateDelete(nodeId.toString()),
         id: nodeId.toString(),
         name: taskForm.name,
         model: taskForm.model,
@@ -95,6 +99,51 @@ export default function NodeBoard() {
     (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  const handleDeleteNode = useCallback(() => {
+    if (!nodeToDelete) return;
+
+    // Remove the node
+    setNodes((nodes) => nodes.filter((node) => node.id !== nodeToDelete));
+
+    // Remove all edges connected to this node
+    setEdges((edges) =>
+      edges.filter(
+        (edge) => edge.source !== nodeToDelete && edge.target !== nodeToDelete
+      )
+    );
+
+    setDeleteConfirmOpen(false);
+    setNodeToDelete(null);
+  }, [nodeToDelete, setNodes, setEdges]);
+
+  const getDeletePreview = useCallback(() => {
+    if (!nodeToDelete) return null;
+
+    const incomingEdges = edges.filter((edge) => edge.target === nodeToDelete);
+    const outgoingEdges = edges.filter((edge) => edge.source === nodeToDelete);
+
+    return {
+      message: `This will delete the node and disconnect ${incomingEdges.length} parent connection(s) and ${outgoingEdges.length} child connection(s).`,
+      parentCount: incomingEdges.length,
+      childCount: outgoingEdges.length,
+    };
+  }, [nodeToDelete, edges]);
+
+  const initiateDelete = useCallback((nodeId: string) => {
+    setNodeToDelete(nodeId);
+    setDeleteConfirmOpen(true);
+  }, []);
+
+  const handleDeleteButtonClick = useCallback(() => {
+    const selectedNodes = nodes.filter((node) => node.selected);
+    if (selectedNodes.length > 0) {
+      initiateDelete(selectedNodes[0].id);
+    } else {
+      // If no node is selected, you could show a message or do nothing
+      console.log("No node selected for deletion");
+    }
+  }, [nodes, initiateDelete]);
 
   const handleFormChange = (field: string, value: string) => {
     setTaskForm((prev) => ({ ...prev, [field]: value }));
@@ -123,6 +172,7 @@ export default function NodeBoard() {
           data: {
             ...nodeData,
             dependsOn: [dependencyId],
+            onDelete: () => initiateDelete(nodeId.toString()),
           } as WorkNodeData,
         };
       });
@@ -212,7 +262,54 @@ export default function NodeBoard() {
             </div>
           </DialogContent>
         </Dialog>
+        <Button
+          onClick={handleDeleteButtonClick}
+          disabled={!nodes.some((node) => node.selected)}
+          className="bg-red-600 ml-4 hover:bg-red-800 text-white shadow-lg"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete Selected
+        </Button>
       </div>
+
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent className="border-none shadow-red-500 shadow-sm bg-black md:bg-black/30 text-white max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-white">Delete Node</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {getDeletePreview() && (
+              <div className="bg-gray-800 p-3 rounded text-sm">
+                <p className="text-yellow-400 mb-2">Warning:</p>
+                <p>{getDeletePreview()?.message}</p>
+                {((getDeletePreview()?.parentCount ?? 0) > 0 ||
+                  (getDeletePreview()?.childCount ?? 0) > 0) && (
+                  <p className="text-gray-400 mt-2">
+                    Connected nodes will be disconnected but not deleted.
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteConfirmOpen(false)}
+                className="text-white border-white hover:bg-white hover:text-black"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDeleteNode}
+                className="bg-red-600 hover:bg-red-800 text-white"
+              >
+                Delete Node
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <ReactFlow
         style={{ height: "90%" }}
         nodes={nodes}
@@ -223,6 +320,7 @@ export default function NodeBoard() {
         minZoom={0.8}
         fitView
         nodeTypes={nodeTypes}
+        deleteKeyCode={null}
       >
         <Controls />
 
