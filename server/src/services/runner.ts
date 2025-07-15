@@ -6,7 +6,7 @@ type TaskResult = Record<string, string>;
 type TaskMap = Record<string, TaskInput>;
 
 export const runWorkFlow = async (payload: RunWorkflowRequest) => {
-  const { inputs, tasks, temperature = 0.7, maxTokens = 1000 } = payload;
+  const { tasks, temperature = 0.7, maxTokens = 1000 } = payload;
   const taskMap: TaskMap = Object.fromEntries(tasks.map((t) => [t.id, t]));
   const results: TaskResult = {};
   const visited = new Set<string>();
@@ -29,7 +29,7 @@ export const runWorkFlow = async (payload: RunWorkflowRequest) => {
     }
 
     //context for LLM(inputs + prev task results)
-    const context = { ...inputs, ...results };
+    const context = { ...results };
 
     //generate prompt for LLM
     const renderPrompt = Mustache.render(task.promptTemplate, context);
@@ -43,7 +43,6 @@ export const runWorkFlow = async (payload: RunWorkflowRequest) => {
     });
 
     console.log(output);
-    //save result
     results[taskId] = output;
 
     visited.add(taskId);
