@@ -79,6 +79,7 @@ export default function NodeBoard() {
       },
       data: {
         id: nodeId.toString(),
+        name: taskForm.name,
         model: taskForm.model,
         promptTemplate: taskForm.promptTemplate,
         dependsOn: [],
@@ -100,10 +101,12 @@ export default function NodeBoard() {
   };
 
   const changeDependency = useCallback(() => {
+    console.log("Previous Dependencies----->", nodes);
+    console.log("changing dependency");
     setNodes((nodes) => {
       return nodes.map((node) => {
         const nodeData = node.data as WorkNodeData;
-        const incoming = edges.filter((edge) => (edge.target = node.id));
+        const incoming = edges.filter((edge) => edge.target === node.id);
 
         //first incomig enge
         const dependency = incoming.length > 0 ? incoming[0] : null;
@@ -128,8 +131,7 @@ export default function NodeBoard() {
 
   useEffect(() => {
     changeDependency();
-    console.log(nodes);
-  }, [edges, changeDependency]);
+  }, [edges]);
 
   return (
     <div className="relative " style={{ width: "100vw", height: "100vh" }}>
