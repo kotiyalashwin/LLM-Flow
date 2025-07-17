@@ -1,6 +1,6 @@
 export type TaskInput = {
   id: string; // unique identifier
-  provider: "openai" | "claude" | "gemini"; // which LLM to use
+  model: "openai" | "claude" | "gemini"; // which LLM to use
   promptTemplate: string; // e.g. "Summarize: {{input}}"
   dependsOn: string[]; // task IDs this depends on
 };

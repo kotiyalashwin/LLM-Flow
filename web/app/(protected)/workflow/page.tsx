@@ -1,4 +1,4 @@
-import NodeBoard from "@/web/components/Workflow/NodeBoars";
+import NodeBoard from "@/components/Workflow/NodeBoard";
 
 const WorkFlow = () => {
   return (

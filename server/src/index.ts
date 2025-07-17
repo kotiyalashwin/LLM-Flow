@@ -1,8 +1,12 @@
 import express from "express";
 import runRouter from "./routes/run";
 import "dotenv/config";
+import cosrs from 'cors'
 
 const app = express();
+app.use(cosrs({origin : 
+  'http://localhost:3000'
+}))
 app.use(express.json());
 
 app.get("/", (req, res) => {

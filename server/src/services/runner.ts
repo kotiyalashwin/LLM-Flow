@@ -1,4 +1,4 @@
-import { TaskInput, RunWorkflowRequest } from "@common/index";
+import { TaskInput, RunWorkflowRequest } from "../types/index";
 import Mustache from "mustache";
 import { callLLM } from "../llm/llm";
 
@@ -14,30 +14,30 @@ export const runWorkFlow = async (payload: RunWorkflowRequest) => {
   const executeTask = async (taskId: string) => {
     //result already calculated
     if (results[taskId]) return results[taskId];
-
     const task = taskMap[taskId];
 
     if (!task) throw new Error(`Task: ${taskId} not found`);
-
+    
     //execute task which curr task is dependent on
     for (const depId of task.dependsOn) {
-      //check if visited this task
-      if (!visited.has(depId)) {
+     if(depId){
+       if (!visited.has(depId)) {
         //call execute task recusively
         await executeTask(depId);
       }
+     }
     }
+  
 
     //context for LLM(inputs + prev task results)
     const context = { ...results };
 
     //generate prompt for LLM
     const renderPrompt = Mustache.render(task.promptTemplate, context);
-
     //call LLM based on the model for each task
     const output = await callLLM({
-      prompt: renderPrompt,
-      model: task.provider,
+      prompt:  renderPrompt,
+      model: task.model,
       temperature,
       maxTokens,
     });

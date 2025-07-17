@@ -8,8 +8,7 @@ router.post("/", async (req, res) => {
     const body = req.body;
 
     const response = await runWorkFlow(body);
-
-    console.log(response);
+    // console.log(response);
     res.json(response);
   } catch (e) {
     console.log(e);

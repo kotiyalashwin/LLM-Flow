@@ -25,9 +25,9 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
-
+import axios from 'axios'
 import { Textarea } from "../ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
+import {  Plus, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -100,6 +100,8 @@ export default function NodeBoard() {
     [setEdges]
   );
 
+
+
   const handleDeleteNode = useCallback(() => {
     if (!nodeToDelete) return;
 
@@ -157,7 +159,11 @@ export default function NodeBoard() {
         const nodeData = node.data as WorkNodeData;
         const incoming = edges.filter((edge) => edge.target === node.id);
 
-        //first incomig enge
+        if(incoming.length === 0){
+          return node
+        }
+
+        //first incomig enge  
         const dependency = incoming.length > 0 ? incoming[0] : null;
         let dependencyId: string | null = null;
         if (dependency) {
@@ -171,6 +177,7 @@ export default function NodeBoard() {
           ...node,
           data: {
             ...nodeData,
+            promptTemplate : `By using data from {{${dependencyId}}}. ${nodeData.promptTemplate}`,
             dependsOn: [dependencyId],
             onDelete: () => initiateDelete(nodeId.toString()),
           } as WorkNodeData,
@@ -182,6 +189,19 @@ export default function NodeBoard() {
   useEffect(() => {
     changeDependency();
   }, [edges]);
+
+  const startWorkFlow = async()=>{
+    const nodesData= nodes.map(node => (node.data))
+
+    const {data , status } = await axios.post('http://localhost:8080/run', { tasks : nodesData})
+    if(status != 200){
+      console.error(data)
+      return;
+    }
+
+    console.log({response : data})
+
+  }
 
   return (
     <div className="relative " style={{ width: "100vw", height: "100vh" }}>
@@ -269,6 +289,14 @@ export default function NodeBoard() {
         >
           <Trash2 className="w-4 h-4 mr-2" />
           Delete Selected
+        </Button>
+        <Button
+          onClick={startWorkFlow}
+          disabled={nodes.length < 2}
+          className=" text-white shadow-lg"
+        >
+          {/* <Trash2 className="w-4 h-4 mr-2" /> */}
+          Start
         </Button>
       </div>
 
