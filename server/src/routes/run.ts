@@ -1,13 +1,23 @@
 import express from "express";
 import { runWorkFlow } from "../services/runner";
+import { connections } from "../ws/ws";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  try {
-    const body = req.body;
 
-    const response = await runWorkFlow(body);
+router.post("/:conId", async (req, res) => {
+  try {
+    
+    const body = req.body;
+    const {conId} = req.params
+    const ws = connections.get(conId)
+    console.log(connections)
+    if(!ws){
+      res.json({message : 'Ws not established'})
+      return
+    }
+
+    const response = await runWorkFlow(body ,ws );
     // console.log(response);
     res.json(response);
   } catch (e) {

@@ -1,11 +1,12 @@
 import { TaskInput, RunWorkflowRequest } from "../types/index";
 import Mustache from "mustache";
 import { callLLM } from "../llm/llm";
+import WebSocket from "ws";
 
 type TaskResult = Record<string, string>;
 type TaskMap = Record<string, TaskInput>;
 
-export const runWorkFlow = async (payload: RunWorkflowRequest) => {
+export const runWorkFlow = async (payload: RunWorkflowRequest , ws : WebSocket) => {
   const { tasks, temperature = 0.7, maxTokens = 1000 } = payload;
   const taskMap: TaskMap = Object.fromEntries(tasks.map((t) => [t.id, t]));
   const results: TaskResult = {};
@@ -44,6 +45,7 @@ export const runWorkFlow = async (payload: RunWorkflowRequest) => {
 
     console.log(output);
     results[taskId] = output;
+    ws.send(JSON.stringify({id : task.id , processing : false}))
 
     visited.add(taskId);
     return output;
@@ -51,6 +53,7 @@ export const runWorkFlow = async (payload: RunWorkflowRequest) => {
 
   //all tasks
   for (const task of tasks) {
+    ws.send(JSON.stringify({id : task.id , processing : true}))
     await executeTask(task.id);
   }
 

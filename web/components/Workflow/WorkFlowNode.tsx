@@ -8,10 +8,12 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Handle, Position } from "@xyflow/react";
-import { GripVertical } from "lucide-react";
+import { CheckCircle2, GripVertical, Loader2 } from "lucide-react";
 import { Input } from "../ui/input";
+import { WorkNodeData } from "./NodeBoard";
 
-export default function WorkFlowNode({ data, id }: { data: any; id: string }) {
+export default function WorkFlowNode({ data, id }: { data:WorkNodeData ; id: string }) {
+ 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(data.name || "New Task");
 
@@ -59,6 +61,19 @@ export default function WorkFlowNode({ data, id }: { data: any; id: string }) {
             )}
           </div>
         </div>
+         {data.processing && (
+          <div className="flex items-center space-x-2 mt-2 py-1 px-2 bg-blue-800 rounded-md">
+            <Loader2 className="animate-spin h-4 w-4 text-blue-300" />
+            <span className="text-xs text-blue-300 font-medium">Processing...</span>
+          </div>
+        )}
+        
+        {data.completed && !data.processing && (
+          <div className="flex items-center space-x-2 mt-2 py-1 px-2 bg-green-800 rounded-md">
+            <CheckCircle2 className="h-4 w-4 text-green-300" />
+            <span className="text-xs text-green-300 font-medium">Completed</span>
+          </div>
+        )}
         {data.model && (
           <div className="mt-2">
             <span

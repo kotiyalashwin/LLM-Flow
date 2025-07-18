@@ -27,7 +27,7 @@ import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from 'axios'
 import { Textarea } from "../ui/textarea";
-import {  Plus, Trash2 } from "lucide-react";
+import {  AlertTriangle, Plus, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -40,13 +40,14 @@ import { useCallback, useEffect, useState } from "react";
 const nodeTypes: NodeTypes = {
   workFlowNode: WorkFlowNode,
 };
-
-interface WorkNodeData extends Record<string, unknown> {
+export interface WorkNodeData extends Record<string, unknown> {
   id: string;
   name: string;
   promptTemplate: string;
   model: string;
   dependsOn: string[] | [];
+  processing : boolean,
+  completed :boolean
 }
 
 const initialNodes: Node[] = [];
@@ -58,6 +59,8 @@ export default function NodeBoard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [nodeToDelete, setNodeToDelete] = useState<string | null>(null);
+  const [conId , setConId] = useState('')
+  
   const [nodeId, setNodeId] = useState(1);
   const [taskForm, setTaskForm] = useState<{
     name: string;
@@ -87,6 +90,8 @@ export default function NodeBoard() {
         model: taskForm.model,
         promptTemplate: taskForm.promptTemplate,
         dependsOn: [],
+        completed : false,
+        processing : false,
       } as WorkNodeData,
     };
     setNodes((prev) => prev.concat(newNode));
@@ -99,8 +104,6 @@ export default function NodeBoard() {
     (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
-
-
 
   const handleDeleteNode = useCallback(() => {
     if (!nodeToDelete) return;
@@ -179,12 +182,69 @@ export default function NodeBoard() {
             ...nodeData,
             promptTemplate : `By using data from {{${dependencyId}}}. ${nodeData.promptTemplate}`,
             dependsOn: [dependencyId],
+            
             onDelete: () => initiateDelete(nodeId.toString()),
           } as WorkNodeData,
         };
       });
     });
   }, [edges, setNodes]);
+
+
+  const updateNodeProcessing = useCallback((nodeId : string, processing:boolean) => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === nodeId) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              processing,
+              completed: !processing && node.data.processing, // Mark as completed if was processing
+            },
+          };
+        }
+        return node;
+      })
+    );
+  }, [setNodes]);
+
+
+  useEffect(() => {
+    const conId = 'workflow_' + Date.now();
+    setConId(conId)
+    const websocket = new WebSocket(`ws://localhost:3001?conId=${conId}`);
+
+    websocket.onopen = () => {
+      console.log('WebSocket connected');
+    };
+
+    websocket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('Received:', data);
+        
+        // Handle the simple format: { id, processing: true/false }
+        if (data.id && typeof data.processing === 'boolean') {
+          updateNodeProcessing(data.id, data.processing);
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
+
+    websocket.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
+
+    websocket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    return () => {
+      websocket.close();
+    };
+  }, [updateNodeProcessing]);
 
   useEffect(() => {
     changeDependency();
@@ -193,7 +253,8 @@ export default function NodeBoard() {
   const startWorkFlow = async()=>{
     const nodesData= nodes.map(node => (node.data))
 
-    const {data , status } = await axios.post('http://localhost:8080/run', { tasks : nodesData})
+    const {data , status } = await axios.post(`http://localhost:8080/run/${conId}`, { tasks : nodesData})
+
     if(status != 200){
       console.error(data)
       return;
