@@ -35,7 +35,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import {QueryClient, QueryClientProvider, useQuery} from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from "react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
+import ResponseContent from "./ResponseContent";
 
 const nodeTypes: NodeTypes = {
   workFlowNode: WorkFlowNode,
@@ -50,17 +53,25 @@ export interface WorkNodeData extends Record<string, unknown> {
   completed :boolean
 }
 
+
 const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
+const queryClient = new QueryClient()
 
-export default function NodeBoard() {
+export default function NodeBoard(){
+  return <QueryClientProvider client={queryClient}>
+    <WorkFlowBoard/>
+  </QueryClientProvider>
+}
+
+
+function WorkFlowBoard() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [nodeToDelete, setNodeToDelete] = useState<string | null>(null);
   const [conId , setConId] = useState('')
-  
   const [nodeId, setNodeId] = useState(1);
   const [taskForm, setTaskForm] = useState<{
     name: string;
@@ -71,6 +82,30 @@ export default function NodeBoard() {
     model: "",
     promptTemplate: "",
   });
+  const [openResponseSheet , setOpenResponseSheet]= useState(false)
+
+  const startWorkFlow = async()=>{
+    const nodesData= nodes.map(node => (node.data))
+
+    const {data , status } = await axios.post(`http://localhost:8080/run/${conId}`, { tasks : nodesData})
+
+    if(status != 200){
+      console.error(data)
+      return;
+    }
+
+    return data
+  }
+
+
+  const {data , isFetched , refetch}  = useQuery({ queryKey : ['startWorkflow'] , enabled : false,  queryFn : startWorkFlow})
+
+  useEffect(()=> {
+    if(isFetched){
+
+      setOpenResponseSheet(true)
+    }
+  },  [isFetched])
 
   const handleAddTask = useCallback(() => {
     if (!taskForm.name.trim()) return;
@@ -118,6 +153,7 @@ export default function NodeBoard() {
       )
     );
 
+    setNodeId(prev => prev-1);
     setDeleteConfirmOpen(false);
     setNodeToDelete(null);
   }, [nodeToDelete, setNodes, setEdges]);
@@ -224,7 +260,6 @@ export default function NodeBoard() {
         const data = JSON.parse(event.data);
         console.log('Received:', data);
         
-        // Handle the simple format: { id, processing: true/false }
         if (data.id && typeof data.processing === 'boolean') {
           updateNodeProcessing(data.id, data.processing);
         }
@@ -250,19 +285,7 @@ export default function NodeBoard() {
     changeDependency();
   }, [edges]);
 
-  const startWorkFlow = async()=>{
-    const nodesData= nodes.map(node => (node.data))
-
-    const {data , status } = await axios.post(`http://localhost:8080/run/${conId}`, { tasks : nodesData})
-
-    if(status != 200){
-      console.error(data)
-      return;
-    }
-
-    console.log({response : data})
-
-  }
+  
 
   return (
     <div className="relative " style={{ width: "100vw", height: "100vh" }}>
@@ -352,7 +375,8 @@ export default function NodeBoard() {
           Delete Selected
         </Button>
         <Button
-          onClick={startWorkFlow}
+          // onClick={startWorkFlow}
+          onClick={()=> refetch()}
           disabled={nodes.length < 2}
           className=" text-white shadow-lg"
         >
@@ -415,6 +439,19 @@ export default function NodeBoard() {
 
         <Background gap={12} size={1} />
       </ReactFlow>
+
+      <Sheet open={openResponseSheet} onOpenChange={setOpenResponseSheet}>
+            <SheetContent className=" border-purple-950">
+              <SheetHeader>
+                <SheetTitle>Response</SheetTitle>
+                <SheetDescription className="text-neutral-400">LLMs can make mistakes</SheetDescription>
+              </SheetHeader>
+
+              <ResponseContent data={data} />
+            </SheetContent>
+      </Sheet>
     </div>
+
+    
   );
 }

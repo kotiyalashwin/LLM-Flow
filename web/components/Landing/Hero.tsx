@@ -31,7 +31,7 @@ export const Hero = () => {
              md:h-auto w-full "
           >
             <div className="w-full">
-              <h1 className="text-6xl sm:text-5xl md:mt-10 md:text-6xl leading-10  text-center   text-amber-50 md:leading-tight">
+              <h1 className="text-6xl  sm:text-5xl md:mt-10 md:text-6xl leading-10  text-center   text-amber-50 md:leading-tight">
                 <motion.span
                   variants={fadeIn}
                   initial="initial"
