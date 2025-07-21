@@ -21,7 +21,8 @@ The entire project uses **Typescript** as the main language.
 ## Upcoming Features
 - [ ] Rate Limiting 
 - [ ] UserAuth (for strict limiting)
-- [ ] Better Display of Response in frontend (can stream responses as well)
+- [x] Better Display of Response in frontend 
+- [ ] Try to stream Responses
 - [ ] Dockerise the application
 
 
