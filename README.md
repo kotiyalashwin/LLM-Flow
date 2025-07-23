@@ -19,9 +19,9 @@ OrchLLM uses **Nextjs** for Frontend, **Express** based BackendServer and **Webs
 The entire project uses **Typescript** as the main language.
 
 ## Upcoming Features
-- [ ] Rate Limiting 
+- [x] Rate Limiting 
 - [ ] UserAuth (for strict limiting)
-- [x] Better Display of Response in frontend 
+- [x] Better Display of Response in frontend(21/07/2025)
 - [ ] Try to stream Responses
 - [ ] Dockerise the application
 

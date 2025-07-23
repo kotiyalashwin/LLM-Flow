@@ -27,7 +27,7 @@ import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from 'axios'
 import { Textarea } from "../ui/textarea";
-import {  AlertTriangle, Plus, Trash2 } from "lucide-react";
+import {   Plus, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -39,6 +39,7 @@ import {QueryClient, QueryClientProvider, useQuery} from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 import ResponseContent from "./ResponseContent";
+import { useSession } from "@/lib/auth-client";
 
 const nodeTypes: NodeTypes = {
   workFlowNode: WorkFlowNode,
@@ -83,25 +84,35 @@ function WorkFlowBoard() {
     promptTemplate: "",
   });
   const [openResponseSheet , setOpenResponseSheet]= useState(false)
+  const session = useSession()
+  console.log(session.data?.user.id)
 
   const startWorkFlow = async()=>{
     const nodesData= nodes.map(node => (node.data))
+    const userId = session.data?.user.id;
 
-    const {data , status } = await axios.post(`http://localhost:8080/run/${conId}`, { tasks : nodesData})
+    const response = await axios.post(`http://localhost:8080/run/${userId}/${conId}`, { tasks : nodesData})
 
-    if(status != 200){
-      console.error(data)
-      return;
+    if(response.status != 200){
+      throw new Error(response.data?.error || "Failed to start workflow");
     }
 
-    return data
+    return response.data;
   }
 
 
-  const {data , isFetched , refetch}  = useQuery({ queryKey : ['startWorkflow'] , enabled : false,  queryFn : startWorkFlow})
+  const {data , isError, isFetched , error, refetch}  = useQuery({
+     queryKey : ['startWorkflow'] , 
+     enabled : false, 
+    queryFn : startWorkFlow,
+  })
+
+  if(isError){
+    console.error("Error starting workflow:", error);
+  }
 
   useEffect(()=> {
-    if(isFetched){
+    if(isFetched && !error){
 
       setOpenResponseSheet(true)
     }
@@ -289,7 +300,7 @@ function WorkFlowBoard() {
 
   return (
     <div className="relative " style={{ width: "100vw", height: "100vh" }}>
-      <div className="absolute top-10 left-4 z-10">
+      <div className="absolute flex items-center top-10 left-4 z-10">
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
             <Button className=" bg-purple-600 hover:bg-purple-800 text-white shadow-lg">
@@ -377,8 +388,8 @@ function WorkFlowBoard() {
         <Button
           // onClick={startWorkFlow}
           onClick={()=> refetch()}
-          disabled={nodes.length < 2}
-          className=" text-white shadow-lg"
+          // disabled={nodes.length < 2}
+          className=" text-black shadow-lg ml-2 hover:bg-white/85 bg-white opacity-100"
         >
           {/* <Trash2 className="w-4 h-4 mr-2" /> */}
           Start

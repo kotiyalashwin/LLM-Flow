@@ -15,8 +15,10 @@ const Navbar = () => {
 
           {/* Get Started Button */}
           <div className="flex items-center">
-            <AuthButton>
-              <Link href={"/workflow"}>Get Started</Link>
+            <AuthButton >
+              {/* <Link href={"/workflow"}> */}
+              Get Started
+              {/* </Link> */}
             </AuthButton>
           </div>
         </div>
