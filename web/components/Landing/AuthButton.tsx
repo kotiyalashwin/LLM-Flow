@@ -1,6 +1,5 @@
 'use client'
 import { ArrowRight } from "lucide-react";
-
 import { Button } from "../ui/button";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";

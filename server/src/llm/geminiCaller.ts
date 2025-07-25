@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from ".bin/@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { LLMRequest } from "./llm";
 
 export const callGemini = async (req: LLMRequest): Promise<string> => {
