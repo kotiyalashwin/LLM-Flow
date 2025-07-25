@@ -1,9 +1,6 @@
 import * as motion from "motion/react-client";
 import { Button } from "../ui/button";
-import { ArrowRight, Star } from "lucide-react";
-import Link from "next/link";
-import { color } from "motion";
-import Navbar from "./Navbar";
+import {Star } from "lucide-react"
 import { LayoutProvider } from "./LayoutProvider";
 import { AuthButton } from "./AuthButton";
 
@@ -86,7 +83,7 @@ export const Hero = () => {
                 className="flex mt-8 md:ml-2 w-full  items-center space-x-4 justify-center"
               >
                 <AuthButton>
-                  <Link href={"/workflow"}>Create WorkFlow</Link>
+                  Create WorkFlow
                 </AuthButton>
                 <Button
                   variant="outline"

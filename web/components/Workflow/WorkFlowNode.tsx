@@ -12,7 +12,7 @@ import { CheckCircle2, GripVertical, Loader2 } from "lucide-react";
 import { Input } from "../ui/input";
 import { WorkNodeData } from "./NodeBoard";
 
-export default function WorkFlowNode({ data, id }: { data:WorkNodeData ; id: string }) {
+export default function WorkFlowNode({ data }: { data:WorkNodeData }) {
  
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(data.name || "New Task");

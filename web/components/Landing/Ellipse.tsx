@@ -1,6 +1,8 @@
+import Image from "next/image";
+
 export default function EllipseGradient() {
   return (
-    <img
+    <Image
       src="/gradient-1.svg"
       alt="Background glow"
       className="

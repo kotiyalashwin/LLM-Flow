@@ -39,7 +39,9 @@ import {QueryClient, QueryClientProvider, useQuery} from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 import ResponseContent from "./ResponseContent";
-import { useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
+import { BACKEND_URL, } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 
 const nodeTypes: NodeTypes = {
   workFlowNode: WorkFlowNode,
@@ -74,6 +76,7 @@ function WorkFlowBoard() {
   const [nodeToDelete, setNodeToDelete] = useState<string | null>(null);
   const [conId , setConId] = useState('')
   const [nodeId, setNodeId] = useState(1);
+  const router = useRouter()
   const [taskForm, setTaskForm] = useState<{
     name: string;
     model: string | "Gemini" | "Claude";
@@ -84,16 +87,18 @@ function WorkFlowBoard() {
     promptTemplate: "",
   });
   const [openResponseSheet , setOpenResponseSheet]= useState(false)
-  const session = useSession()
-  console.log(session.data?.user.id)
+  const session = authClient.useSession()
 
   const startWorkFlow = async()=>{
+   
+    // console.log(BACKEND_URL)
     const nodesData= nodes.map(node => (node.data))
     const userId = session.data?.user.id;
 
-    const response = await axios.post(`http://localhost:8080/run/${userId}/${conId}`, { tasks : nodesData})
+    const response = await axios.post(`${BACKEND_URL}/run/${userId}/${conId}`, { tasks : nodesData})
 
     if(response.status != 200){
+
       throw new Error(response.data?.error || "Failed to start workflow");
     }
 
@@ -116,7 +121,7 @@ function WorkFlowBoard() {
 
       setOpenResponseSheet(true)
     }
-  },  [isFetched])
+  },  [isFetched , error])
 
   const handleAddTask = useCallback(() => {
     if (!taskForm.name.trim()) return;
@@ -202,8 +207,8 @@ function WorkFlowBoard() {
   };
 
   const changeDependency = useCallback(() => {
-    console.log("Previous Dependencies----->", nodes);
-    console.log("changing dependency");
+    // console.log("Previous Dependencies----->", nodes);
+    // console.log("changing dependency");
     setNodes((nodes) => {
       return nodes.map((node) => {
         const nodeData = node.data as WorkNodeData;
@@ -260,7 +265,8 @@ function WorkFlowBoard() {
   useEffect(() => {
     const conId = 'workflow_' + Date.now();
     setConId(conId)
-    const websocket = new WebSocket(`ws://localhost:3001?conId=${conId}`);
+    const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}?conId=${conId}`;
+    const websocket = new WebSocket(wsUrl);
 
     websocket.onopen = () => {
       console.log('WebSocket connected');
@@ -300,7 +306,7 @@ function WorkFlowBoard() {
 
   return (
     <div className="relative " style={{ width: "100vw", height: "100vh" }}>
-      <div className="absolute flex items-center top-10 left-4 z-10">
+      <div className="absolute flex   items-center top-10 left-4 z-10">
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
             <Button className=" bg-purple-600 hover:bg-purple-800 text-white shadow-lg">
@@ -377,6 +383,7 @@ function WorkFlowBoard() {
             </div>
           </DialogContent>
         </Dialog>
+        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row items-center">
         <Button
           onClick={handleDeleteButtonClick}
           disabled={!nodes.some((node) => node.selected)}
@@ -386,14 +393,40 @@ function WorkFlowBoard() {
           Delete Selected
         </Button>
         <Button
-          // onClick={startWorkFlow}
+          
           onClick={()=> refetch()}
-          // disabled={nodes.length < 2}
+          disabled={nodes.length < 2}
           className=" text-black shadow-lg ml-2 hover:bg-white/85 bg-white opacity-100"
         >
           {/* <Trash2 className="w-4 h-4 mr-2" /> */}
           Start
         </Button>
+
+        <Button 
+          disabled={nodes.length < 1}
+        className="bg-white cursor-pointer hover:bg-white text-black ml-2" onClick={()=> window.location.reload()}>
+          Clear Board
+        </Button>
+        { !openResponseSheet && isFetched && <Button
+        onClick = {()=> setOpenResponseSheet(true)}
+         className="bg-white cursor-pointer hover:bg-white text-black ml-2" >
+          View Response
+        </Button>}
+
+        <Button 
+          onClick={async()=>{
+            await authClient.signOut({
+              fetchOptions : {
+                onSuccess : ()=>{
+                  router.push('/')
+                }}
+            })
+          }}
+        className="bg-white cursor-pointer hover:bg-white text-black ml-2" >
+          Exit
+        </Button>
+      
+        </div>
       </div>
 
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
@@ -452,7 +485,7 @@ function WorkFlowBoard() {
       </ReactFlow>
 
       <Sheet open={openResponseSheet} onOpenChange={setOpenResponseSheet}>
-            <SheetContent className=" border-purple-950">
+            <SheetContent className=" border-purple-950s">
               <SheetHeader>
                 <SheetTitle>Response</SheetTitle>
                 <SheetDescription className="text-neutral-400">LLMs can make mistakes</SheetDescription>

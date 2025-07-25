@@ -40,32 +40,21 @@ export default function ResponseContent({ data }: ResponseContentProps) {
   }
 
   return (
-    <div className="space-y-4 p-2">
-      {/* Show the last response fully expanded */}
-      <div className="border rounded-lg p-3 bg-card">
-        <h3 className="font-medium mb-2 text-sm">Response for the {lastResponseKey} node</h3>
-        <div className="text-xs leading-relaxed text-muted-foreground">
-          <ReactMarkdown
-            // className="prose prose-xs max-w-none [&>*]:my-1 [&>p]:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
-            components={markdownComponents}
-          >
-            {responses[responses.length - 1][1]}
-          </ReactMarkdown>
-        </div>
-      </div>
+    <div className="space-y-4 p-2 overflow-y-scroll">
+     
 
       {/* Show all responses in accordion if there are more than one */}
       {responses.length > 1 && (
         <div className="space-y-2">
           <h2 className="text-sm font-medium mb-3">All Responses</h2>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full " defaultValue={lastResponseKey}>
             {responses.map(([key, value]) => (
-              <AccordionItem key={key} value={key} className="border-b">
+              <AccordionItem key={key} value={key} className="border-b  ">
                 <AccordionTrigger className="text-left text-xs py-2 hover:no-underline">
                   Response for the {key} node
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="pb-2">
+                  <div className="pb-2 overflow-x-scroll" >
                     <ReactMarkdown
                     //   className="prose prose-xs max-w-none [&>*]:my-1 [&>p]:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
                       components={markdownComponents}
@@ -79,6 +68,17 @@ export default function ResponseContent({ data }: ResponseContentProps) {
           </Accordion>
         </div>
       )}
+       {/* <div className="border rounded-lg p-3 bg-card">
+        <h3 className="font-medium mb-2 text-sm">Response for the {lastResponseKey} node</h3>
+        <div className="text-xs leading-relaxed text-muted-foreground">
+          <ReactMarkdown
+            // className="prose prose-xs max-w-none [&>*]:my-1 [&>p]:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+            components={markdownComponents}
+          >
+            {responses[responses.length - 1][1]}
+          </ReactMarkdown>
+        </div>
+      </div> */}
     </div>
   )
 }

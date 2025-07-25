@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import TypingAnimation from "./Animated/TypingAnimation";
 import { Button } from "../ui/button";
@@ -11,8 +11,7 @@ export const DemoSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [reset, setReset] = useState(0);
 
-  const demoSteps = [
-    {
+  const demoSteps = useMemo( ()=> [{
       title: "Research Query",
       content: "Analyzing Apple Intelligence developments...",
       model: "Gemini",
@@ -41,8 +40,7 @@ export const DemoSection = () => {
       model: "Claude",
       color: "bg-purple-600",
       duration: 3000, // 3 seconds
-    },
-  ];
+    }] , [])
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -56,7 +54,7 @@ export const DemoSection = () => {
     }
 
     return () => clearTimeout(timeout);
-  }, [isPlaying, currentStep]);
+  }, [isPlaying, currentStep, demoSteps]);
 
   const handlePlay = () => {
     if (currentStep >= demoSteps.length - 1) {
