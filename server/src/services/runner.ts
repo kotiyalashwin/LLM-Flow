@@ -7,7 +7,7 @@ type TaskResult = Record<string, string>;
 type TaskMap = Record<string, TaskInput>;
 
 export const runWorkFlow = async (payload: RunWorkflowRequest , ws : WebSocket) => {
-  const { tasks, temperature = 0.7, maxTokens = 1000 } = payload;
+  const { tasks, temperature = 0.7, maxTokens = 8000 } = payload;
   const taskMap: TaskMap = Object.fromEntries(tasks.map((t) => [t.id, t]));
   const results: TaskResult = {};
   const visited = new Set<string>();
