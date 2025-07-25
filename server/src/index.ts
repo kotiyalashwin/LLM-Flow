@@ -5,6 +5,7 @@ import "dotenv/config";
 import cors from 'cors'; // Fixed typo: cosrs -> cors
 import { FRONTEND_URL } from "./types/constants";
 import { WebSocket, WebSocketServer } from "ws";
+import { ratelimiter } from "./rate-limiter";
 
 const app = express();
 const server = createServer(app);
@@ -61,7 +62,7 @@ wss.on('connection', (ws: WebSocket, req) => {
 app.use(cors({ origin: FRONTEND_URL })); // Fixed typo: cosrs -> cors
 app.use(express.json());
 
-app.use("/run/:id", runRouter);
+app.use("/run/:id", ratelimiter, runRouter);
 
 // Changed from app.listen to server.listen
 server.listen(8080, () => {

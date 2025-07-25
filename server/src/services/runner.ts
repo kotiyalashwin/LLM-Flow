@@ -43,7 +43,7 @@ export const runWorkFlow = async (payload: RunWorkflowRequest , ws : WebSocket) 
       maxTokens,
     });
 
-    console.log(output);
+    // console.log(output);
     results[taskId] = output;
     ws.send(JSON.stringify({id : task.id , processing : false}))
 
