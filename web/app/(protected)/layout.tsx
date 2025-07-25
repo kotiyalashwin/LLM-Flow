@@ -7,7 +7,7 @@ export default async function ProtectedLayout({ children }: { children: ReactNod
    const session = await auth.api.getSession({
         headers: await headers()
     })
-    console.log(session)
+    // console.log(session)
     if(!session) {
         redirect("/")
     }

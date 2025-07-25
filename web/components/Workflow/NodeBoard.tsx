@@ -275,7 +275,7 @@ function WorkFlowBoard() {
     websocket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log('Received:', data);
+        // console.log('Received:', data);
         
         if (data.id && typeof data.processing === 'boolean') {
           updateNodeProcessing(data.id, data.processing);
